@@ -1,11 +1,10 @@
 fs = require("fs")
 http = require("http")
 
-defaults = {
+defaults =
   contentFolder: "./content",
   encoding: "utf8",
   port: 8080
-}
 
 paths =
   "GET /": { "file": "index.html", "Content-type": "text/html" },
