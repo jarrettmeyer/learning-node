@@ -2,15 +2,15 @@ fs = require("fs")
 http = require("http")
 
 defaults =
-  contentFolder: "./content",
-  encoding: "utf8",
-  port: 8080
+  contentFolder:  "./content",
+  encoding:       "utf8",
+  port:           8080
 
 paths =
-  "GET /": { "file": "index.html", "Content-type": "text/html" },
-  "GET /i_dont_exist.html": { "file": "i_dont_exist.html", "Content-type": "text/html" },
-  "GET /index.html": { "file": "index.html", "Content-type": "text/html" },
-  "GET /stylesheets/style.css": { "file": "stylesheets/style.css", "Content-type": "text/css" }
+  "GET /":                      { "file": "index.html",             "Content-type": "text/html" },
+  "GET /i_dont_exist.html":     { "file": "i_dont_exist.html",      "Content-type": "text/html" },
+  "GET /index.html":            { "file": "index.html",             "Content-type": "text/html" },
+  "GET /stylesheets/style.css": { "file": "stylesheets/style.css",  "Content-type": "text/css" }
 
 app =
 
