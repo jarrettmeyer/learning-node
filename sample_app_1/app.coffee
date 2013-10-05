@@ -7,14 +7,13 @@ defaults = {
   port: 8080
 }
 
-paths = {
+paths =
   "GET /": { "file": "index.html", "Content-type": "text/html" },
   "GET /i_dont_exist.html": { "file": "i_dont_exist.html", "Content-type": "text/html" },
   "GET /index.html": { "file": "index.html", "Content-type": "text/html" },
   "GET /stylesheets/style.css": { "file": "stylesheets/style.css", "Content-type": "text/css" }
-}
 
-app = {
+app =
 
   return200Content: (key, response, data) ->
     response.writeHead(200, { "Content-type": paths[key]["Content-type"] })
@@ -51,8 +50,5 @@ app = {
     server = http.createServer(app.serverActivity)
     server.listen(port)
 
-}
-
 
 module.exports = app
-
