@@ -1,5 +1,5 @@
-fs = require "fs"
-http = require "http"
+fs = require("fs")
+http = require("http")
 
 defaults = {
   contentFolder: "./content",
