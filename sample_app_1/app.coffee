@@ -8,9 +8,9 @@ defaults = {
 }
 
 paths = {
-  "/": { "file": "index.html", "Content-type": "text/html" },
-  "/index.html": { "file": "index.html", "Content-type": "text/html" },
-  "/stylesheets/style.css": { "file": "stylesheets/style.css", "Content-type": "text/css" }
+  "/": { "file": "index.html", "Content-type": "text/html", "method": "GET" },
+  "/index.html": { "file": "index.html", "Content-type": "text/html", "method": "GET" },
+  "/stylesheets/style.css": { "file": "stylesheets/style.css", "Content-type": "text/css", "method": "GET" }
 }
 
 app = {
@@ -30,8 +30,9 @@ app = {
 
   serverActivity: (request, response) ->
     url = request.url
-    console.log "Incoming request for #{url}."
-    if paths[url]
+    method = request.method
+    console.log "----- #{new Date()}: incoming #{method} request for #{url}."
+    if paths[url] && paths[url]["method"]
       file = "#{defaults.contentFolder}/#{paths[url]["file"]}"
       console.log "Serving file: #{file}."
       fs.readFile file, defaults.encoding, (error, data) ->
