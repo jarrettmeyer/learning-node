@@ -5,9 +5,10 @@ My little lessons to myself are written in [Coffee Script](http://coffeescript.o
     $ npm install -g coffee-script
     $ coffee file.coffee
 
-To run Sample App #1
+To run Sample App #1...
 
     $ cd ./sample_app_1
     $ coffee server.coffee
 
+To stop the sample app, use `CTRL-c`.
 Thanks!
