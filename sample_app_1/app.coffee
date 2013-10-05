@@ -31,7 +31,7 @@ app = {
   serverActivity: (request, response) ->
     url = request.url
     method = request.method
-    console.log "----- #{new Date()}: incoming #{method} request for #{url}."
+    console.log("----- #{new Date()}: incoming #{method} request for #{url}.")
     if paths[url] && paths[url]["method"]
       file = "#{defaults.contentFolder}/#{paths[url]["file"]}"
       console.log("Serving file: #{file}.")
