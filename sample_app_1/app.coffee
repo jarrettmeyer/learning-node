@@ -54,15 +54,3 @@ app = {
 
 module.exports = app
 
-
-#if paths[url]
-      #fs.readFile("#{defaults.contentFolder}/#{paths[url]["file"]}", defaults.encoding, (error, data) ->
-      #  if error
-      #    response.writeHead(500, { "Content-type": "text/html" })
-      #    response.end("Server error")
-      #    return
-      #  response.writeHead(200, { "Content-type": paths[url]["Content-type"] })
-      #  response.end(data)
-      #)
-      #return
-    
