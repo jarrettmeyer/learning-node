@@ -49,8 +49,7 @@ app = {
     console.log("Starting server on port #{port}")
     server = http.createServer(app.serverActivity)
     server.listen(port)
-    return
-
+    
 }
 
 
