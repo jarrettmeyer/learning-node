@@ -1,3 +1,4 @@
-app = require "./app"
+App = require("./App")
 
-app.start()
+app = new App()
+app.start(8080)
