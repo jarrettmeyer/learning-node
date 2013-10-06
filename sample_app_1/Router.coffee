@@ -49,7 +49,7 @@ class Router
   returnJson: (request, response, data) ->
     console.log("Serving JSON")
     response.writeHead(200, { "Content-type": "application/json" })
-    response.end(data)
+    response.end(JSON.stringify(data))
 
   return404Error: (requestedUrl, response) ->
     console.error("Sending 404 for request: #{requestedUrl}.")
