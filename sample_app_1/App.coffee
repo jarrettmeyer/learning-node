@@ -1,10 +1,13 @@
+fs = require("fs")
 http = require("http")
 Router = require("./Router")
+Task = require("./models/Task")
 
 class App
   constructor: () ->
     @router = new Router()
     @initializeRoutes()
+    @datafile = "./data/tasks.json"
 
   initializeRoutes: () ->
     console.log("Initializing routes.")
@@ -21,8 +24,24 @@ class App
       @router.returnContent(request, response, "./content/assets/stylesheets/style.css", "text/css")
     )
     @router.match("GET /tasks", (request, response) =>
-      data = []
-      @router.returnJson(request, response, data)
+      fs.readFile(@datafile, "utf8", (error, data) =>
+        if error
+          console.error(error)
+        else
+          tasks = JSON.parse(data)
+          @router.returnJson(request, response, tasks)
+      )
+    )
+    @router.match("POST /tasks", (request, response) =>
+      body = ""
+      request.on("data", (chunk) =>
+        body += chunk
+        console.log("Body: #{body}")
+      )
+      request.on("end", () =>
+        task = new Task()
+        @router.returnJson(request, response, task)
+      )
     )
 
   start: (port) ->
