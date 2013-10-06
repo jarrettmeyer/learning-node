@@ -10,9 +10,14 @@ paths =
   "GET /":                      { "file": "index.html",             "Content-type": "text/html" },
   "GET /i_dont_exist.html":     { "file": "i_dont_exist.html",      "Content-type": "text/html" },
   "GET /index.html":            { "file": "index.html",             "Content-type": "text/html" },
-  "GET /stylesheets/style.css": { "file": "stylesheets/style.css",  "Content-type": "text/css" }
+  "GET /javascripts/script.js": { "file": "javascripts/script.js",  "Content-type": "text/javascript" },
+  "GET /stylesheets/style.css": { "file": "stylesheets/style.css",  "Content-type": "text/css" },
+  "GET /tasks.js":              { "function": "getTasks",           "Content-type": "application/json" }
 
 app =
+
+  isFileContent: (contentType) ->
+    contentType == "text/html" || contentType == "text/css" || contentType == "text/javascript"
 
   return200Content: (key, response, data) ->
     response.writeHead(200, { "Content-type": paths[key]["Content-type"] })
@@ -31,7 +36,7 @@ app =
   serverActivity: (request, response) ->
     key = "#{request.method} #{request.url}"
     console.log("----- #{new Date()}: incoming request #{key}.")
-    if paths[key]
+    if paths[key] && app.isFileContent(paths[key]["Content-type"])
       file = "#{defaults.contentFolder}/#{paths[key]["file"]}"
       console.log("Serving file: #{file}.")
       fs.readFile(file, defaults.encoding, (error, data) ->
