@@ -1,8 +1,6 @@
 fs = require("fs")
 
 class Router
-  self = this
-
   constructor: (request, response) ->
     @request = request
     @response = response
@@ -10,9 +8,16 @@ class Router
 
   findMatch: (requestedUrl) ->
     for pattern in Object.keys(@matches)
-      if requestedUrl == pattern || requestedUrl.match(pattern)
+      if @isMatch(requestedUrl, pattern)
         return @matches[pattern]
     return null
+
+  isMatch: (url, pattern) ->
+    if (typeof pattern == "string" && url == pattern)
+      return true
+    if (typeof pattern == "object" && url.match(pattern))
+      return true
+    return false
 
   match: (requestedUrlPattern, callback) ->
     @matches[requestedUrlPattern] = callback
@@ -28,7 +33,7 @@ class Router
     else
       @return404Error(requestedUrl, response)
 
-  return200Content: (request, response, filename, contentType) ->
+  returnContent: (request, response, filename, contentType) ->
     contentType ?= "text/html"
     console.log("Serving file #{filename} as #{contentType}.")
     fs.readFile(filename, "utf8", (error, data) ->
@@ -40,6 +45,11 @@ class Router
         response.writeHead(200, { "Content-type": contentType })
         response.end(data)
     )
+
+  returnJson: (request, response, data) ->
+    console.log("Serving JSON")
+    response.writeHead(200, { "Content-type": "application/json" })
+    response.end(data)
 
   return404Error: (requestedUrl, response) ->
     console.error("Sending 404 for request: #{requestedUrl}.")
