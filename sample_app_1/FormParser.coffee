@@ -1,3 +1,5 @@
+qs = require("querystring")
+
 class FormParser
   constructor: (request) ->
     @request = request
@@ -10,10 +12,7 @@ class FormParser
     )
     @request.on("end", () =>
       pairs = @body.split(/&/)
-      for pair in pairs
-        parts = pair.split(/\=/)
-        if parts.length > 1
-          @obj[parts[0]] = parts[1]
+      @obj = qs.parse(@body)
       callback(@obj)
     )
 
