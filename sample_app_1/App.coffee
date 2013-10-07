@@ -1,5 +1,6 @@
 fs = require("fs")
 http = require("http")
+FormParser = require("./FormParser")
 Router = require("./Router")
 Task = require("./models/Task")
 
@@ -33,13 +34,8 @@ class App
       )
     )
     @router.match("POST /tasks", (request, response) =>
-      body = ""
-      request.on("data", (chunk) =>
-        body += chunk
-        console.log("Body: #{body}")
-      )
-      request.on("end", () =>
-        task = new Task()
+      new FormParser(request).getObject((data) =>
+        task = new Task(data)
         @router.returnJson(request, response, task)
       )
     )
