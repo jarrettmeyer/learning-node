@@ -3,12 +3,16 @@ http = require("http")
 FormParser = require("./FormParser")
 Router = require("./Router")
 Task = require("./models/Task")
+TaskCollection = require("./models/TaskCollection")
 
 class App
   constructor: () ->
     @router = new Router()
     @initializeRoutes()
     @datafile = "./data/tasks.json"
+    @readTasksFromFile((tasks) =>
+      @taskCollection = new TaskCollection(tasks)
+    )
 
   initializeRoutes: () ->
     console.log("Initializing routes.")
@@ -25,19 +29,33 @@ class App
       @router.returnContent(request, response, "./content/assets/stylesheets/style.css", "text/css")
     )
     @router.match("GET /tasks", (request, response) =>
-      fs.readFile(@datafile, "utf8", (error, data) =>
-        if error
-          console.error(error)
-        else
-          tasks = JSON.parse(data)
-          @router.returnJson(request, response, tasks)
+      @readTasksFromFile((tasks) =>
+        @router.returnJson(request, response, tasks)
       )
     )
     @router.match("POST /tasks", (request, response) =>
       new FormParser(request).getObject((data) =>
         task = new Task(data)
+        @taskCollection.add(task)
+        @writeTasksToFile()
         @router.returnJson(request, response, task)
       )
+    )
+
+  readTasksFromFile: (callback) ->
+    fs.readFile(@datafile, "utf8", (error, data) =>
+      if error
+        console.error(error)
+      else
+        tasks = JSON.parse(data)
+        callback(tasks)
+    )
+
+  writeTasksToFile: () ->
+    content = JSON.stringify(@taskCollection.tasks)
+    fs.writeFile(@datafile, content, (error, data) ->
+      if error
+        console.error("Error when writing to file #{@datafile}: #{error}")
     )
 
   start: (port) ->

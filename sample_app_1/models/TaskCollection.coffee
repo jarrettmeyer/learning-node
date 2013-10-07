@@ -13,4 +13,4 @@ class TaskCollection
   get: (id) ->
     task = @tasks[id]
 
-module.exports = Task
+module.exports = TaskCollection
