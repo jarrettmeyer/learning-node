@@ -1,9 +1,7 @@
 fs = require("fs")
 
 class Router
-  constructor: (request, response) ->
-    @request = request
-    @response = response
+  constructor: () ->
     @matches = {}
 
   findMatch: (requestedUrl) ->
