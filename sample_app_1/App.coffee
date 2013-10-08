@@ -26,7 +26,7 @@ class App
       @router.returnContent(request, response, "./content/assets/javascripts/jquery-2.0.3.min.js", "text/javascript")
     )
     @router.match("GET /javascripts/knockout.js", (request, response) =>
-      @router.returnContent(request, response, "./content/assets/javascripts/knockout-2.3.0.min.js", "text/javascript")
+      @router.returnContent(request, response, "./content/assets/javascripts/knockout-2.3.0.js", "text/javascript")
     )
     @router.match("GET /stylesheets/style.css", (request, response) =>
       @router.returnContent(request, response, "./content/assets/stylesheets/style.css", "text/css")

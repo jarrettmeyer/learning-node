@@ -13,14 +13,35 @@
 
     <table>
       <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th>Description</th>
+          <th>Assigned To</th>
+          <th>&nbsp;</th>
+        </tr>
       </thead>
       <tbody data-bind="foreach: tasks">
         <tr>
+          <td>
+          </td>
           <td data-bind="text: description"></td>
           <td data-bind="text: assignedTo"></td>
         </tr>
       </tbody>
     </table>
+
+    <form data-bind="with: selectedTask">
+      <div class="input-group">
+        <label for="description">Description</label>
+        <textarea name="description" data-bind="value: assignedTo"></textarea>
+      </div>
+      <div class="input-group">
+        <label for="assignedTo">Assigned To</label>
+        <input type="text" name="assignedTo" data-bind="value: assignedTo"/>
+      </div>
+      <div class="input-group">
+      </div>
+    </form>
 
     <script type="text/javascript" src="/javascripts/script.js"></script>
   </body>
