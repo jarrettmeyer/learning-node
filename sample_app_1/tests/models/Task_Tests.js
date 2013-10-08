@@ -23,11 +23,13 @@ describe("Task", function () {
     });
     it("can initialize a task with values", function (done) {
       var source = {
+        id: "test",
         description: "This is a test",
         assignedTo: "John Doe",
         isCompleted: true
       };
       task = new Task(source);
+      assert.equal("test", task.id);
       assert.ok(task.description === "This is a test");
       assert.ok(task.assignedTo === "John Doe");
       assert.ok(task.isCompleted === true);
