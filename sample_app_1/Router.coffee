@@ -44,6 +44,10 @@ class Router
         response.end(data)
     )
 
+  returnEmpty: (request, response) ->
+    response.writeHead(200, { "Content-type": "text/html" })
+    response.end("")
+
   returnJson: (request, response, data) ->
     content = JSON.stringify(data)
     console.log("Serving JSON: #{content}")
