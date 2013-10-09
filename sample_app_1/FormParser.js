@@ -21,4 +21,4 @@ var FormParser = function (_request) {
 
 };
 
-module.exports = FormParser
+module.exports = FormParser;

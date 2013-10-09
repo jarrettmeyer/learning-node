@@ -1,4 +1,26 @@
 body {
   margin: 0;
-  padding: 0;
+  padding: 2em;
+  font-family: Helvetica, Arial, sans-serif;
+  color: #111;
+}
+
+table {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td, th {
+  padding: 3px;
+  text-align: left;
+}
+
+th {
+  color: #333;
+}
+
+td {
+  border-top: 1px solid #73a8ff;
 }

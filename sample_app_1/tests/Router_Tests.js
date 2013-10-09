@@ -58,4 +58,23 @@ describe("Router", function () {
       done();
     });
   });
+
+  describe("#returnBinaryContent", function () {
+    it("appends 'binary' to end call", function (done) {
+      var isBinary = false;
+      var router = new Router();
+      var fakeRequest =  { };
+      var fakeResponse = {
+        writeHead: function () {},
+        end: function(data, test) {
+          isBinary = (test === "binary");
+        }
+      };
+      setTimeout(function () {
+        router.returnBinaryContent(fakeRequest, fakeResponse, "./content/assets/images/pencil.png", "image/png");
+        assert.ok(isBinary);
+      }, 500);
+      done();
+    });
+  });
 });

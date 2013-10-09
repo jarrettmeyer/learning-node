@@ -23,6 +23,7 @@
       <tbody data-bind="foreach: tasks">
         <tr>
           <td>
+            <img src="/images/pencil.png"/>
           </td>
           <td data-bind="text: description"></td>
           <td data-bind="text: assignedTo"></td>
@@ -40,8 +41,13 @@
         <input type="text" name="assignedTo" data-bind="value: assignedTo"/>
       </div>
       <div class="input-group">
+        <button type="button" id="save-task" data-bind="click: $root.saveTask">Save</button>
       </div>
     </form>
+
+    <p data-bind="visible: showAddButton">
+      <button type="button" id="add-task" data-bind="click: addTask">Add Task</a>
+    </p>
 
     <script type="text/javascript" src="/javascripts/script.js"></script>
   </body>

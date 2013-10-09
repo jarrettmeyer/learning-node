@@ -42,6 +42,19 @@ var Router = function () {
     }
   };
 
+  self.returnBinaryContent = function (request, response, filename, contentType) {
+    fs.readFile(filename, function (error, data) {
+      if (error) {
+        console.error(error);
+        response.writeHead(500, { "Content-type": "text/html" });
+        response.end(error);
+        return;
+      }
+      response.writeHead(200, { "Content-type": contentType });
+      response.end(data, "binary");
+    });
+  };
+
   self.returnContent = function (request, response, filename, contentType) {
     if (!contentType) {
       contentType = "text/html";

@@ -14,6 +14,9 @@ var App = function () {
     self.router.match("GET /", function (request, response) {
       self.router.returnContent(request, response, "./content/index.html");
     });
+    self.router.match("GET /images/pencil.png", function (request, response) {
+      self.router.returnBinaryContent(request, response, "./content/assets/images/pencil.png", "image/png");
+    });
     self.router.match("GET /javascripts/script.js", function (request, response) {
       self.router.returnContent(request, response, "./content/assets/javascripts/script.js", "text/javascript");
     });
