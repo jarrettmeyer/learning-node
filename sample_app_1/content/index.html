@@ -23,7 +23,9 @@
       <tbody data-bind="foreach: tasks">
         <tr>
           <td>
-            <img src="/images/pencil.png"/>
+            <a href="#" data-bind="click: $root.editTask, enable: $root.allowEdit">
+              <img src="/images/pencil.png"/>
+            </a>
           </td>
           <td data-bind="text: description"></td>
           <td data-bind="text: assignedTo"></td>
@@ -34,7 +36,7 @@
     <form data-bind="with: selectedTask">
       <div class="input-group">
         <label for="description">Description</label>
-        <textarea name="description" data-bind="value: assignedTo"></textarea>
+        <textarea name="description" data-bind="value: description"></textarea>
       </div>
       <div class="input-group">
         <label for="assignedTo">Assigned To</label>

@@ -45,7 +45,10 @@
     };
 
     self.editTask = function (task) {
-
+      alert("in editTask");
+      self.selectedTask(task);
+      self.isEditing(true);
+      self.isNew(false);
     };
 
     self.initialize = function (tasks) {
