@@ -77,6 +77,8 @@
     self.saveTask = function () {
       if (self.isNew()) {
         self.createTask();
+      } else {
+        self.updateTask();
       }
       self.selectedTask(null);
       self.isEditing(false);
@@ -87,6 +89,17 @@
     self.showAddButton = ko.computed(function () {
       return !self.isEditing();
     });
+
+    self.updateTask = function () {
+      var id = self.selectedTask().id();
+      var url = editTaskUrl.replace("{id}", id);
+      var data = {
+        assignedTo: self.selectedTask().assignedTo(),
+        description: self.selectedTask().description(),
+        id: self.selectedTask().id()
+      };
+      $.post(url, data);
+    };
   }; // TaskCollectionViewModel
 
   var viewModel = new TaskCollectionViewModel();
