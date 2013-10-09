@@ -4,6 +4,7 @@ var FormParser = require("./FormParser");
 var Router = require("./Router");
 var Task = require("./models/Task");
 var TaskCollection = require("./models/TaskCollection");
+var postTaskPattern = /POST \/tasks\/[a-z0-9]+/;
 
 var App = function () {
   var self = this;
@@ -42,6 +43,15 @@ var App = function () {
       formParser.getObject(function (data) {
         var task = new Task(data);
         self.taskCollection.add(task);
+        self.writeTasksToFile();
+        self.router.returnJson(request, response, task);
+      });
+    });
+    self.router.match(postTaskPattern, function (request, response) {
+      var formParser = new FormParser(request);
+      formParser.getObject(function (data) {
+        var task = new Task(data);
+        self.taskCollection.update(task.id, task);
         self.writeTasksToFile();
         self.router.returnJson(request, response, task);
       });

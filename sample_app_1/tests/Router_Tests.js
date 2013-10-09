@@ -16,15 +16,26 @@ describe("Router", function () {
 
   describe("#isMatch", function () {
     it("can match a regular expression", function (done) {
+      var testRoutes = [
+        "POST /tasks/1",
+        "POST /tasks/12",
+        "POST /tasks/1a2b",
+        "POST /tasks/aaaabbbbccccdddd"
+      ];
+      var pattern = /POST \/tasks\/[a-z0-9]{1,16}/;
       var router = new Router();
-      var result = router.isMatch("POST /tasks/1", /POST \/tasks\/[a-z0-9]{1,16}/);
-      assert.ok(result);
+      for (var i = 0, len = testRoutes.length; i < len; i += 1) {
+        var testRoute = testRoutes[i];
+        var result = router.isMatch(testRoute, pattern);
+        assert.ok(result);
+      }
       done();
     });
 
     it("can match a string", function (done) {
+      var pattern = "GET /index.html";
       var router = new Router();
-      var result = router.isMatch("GET /index.html", "GET /index.html");
+      var result = router.isMatch("GET /index.html", pattern);
       assert.ok(result);
       done();
     });

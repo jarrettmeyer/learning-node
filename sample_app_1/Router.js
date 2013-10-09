@@ -8,6 +8,9 @@ var Router = function () {
     var keys = Object.keys(self.matches);
     for (var i = 0, len = keys.length; i < len; i += 1) {
       var pattern = keys[i];
+      if (self.isRegExp(pattern)) {
+        pattern = self.toRegExp(pattern);
+      }
       if (self.isMatch(url, pattern)) {
         return self.matches[pattern];
       }
@@ -16,6 +19,7 @@ var Router = function () {
   };
 
   self.isMatch = function (url, pattern) {
+    //console.log("Testing URL " + url + " against pattern " + pattern + ".");
     if (typeof pattern === "string" && url === pattern) {
       return true;
     }
@@ -23,6 +27,10 @@ var Router = function () {
       return true;
     }
     return false;
+  };
+
+  self.isRegExp = function (value) {
+    return value[0] === "/" && value[value.length - 1] === "/";
   };
 
   self.match = function (pattern, callback) {
@@ -33,7 +41,7 @@ var Router = function () {
     var method = request.method;
     var url = request.url;
     var requestedPattern = method + " " + url;
-    //console.log("Trying to find route match for: " + requestedPattern);
+    //console.log("Incoming request for: " + requestedPattern);
     var match = self.findMatch(requestedPattern);
     if (match) {
       match(request, response);
@@ -85,6 +93,11 @@ var Router = function () {
     console.error("Sending 404 for requested pattern: " + requestedPattern);
     response.writeHead(404, { "Content-type": "text/html" });
     response.end("Page not found: " + requestedPattern);
+  };
+
+  self.toRegExp = function (string) {
+    string = string.substring(1, string.length - 1);
+    return new RegExp(string);
   };
 };
 
