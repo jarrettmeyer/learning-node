@@ -2,17 +2,23 @@
   var TaskViewModel,
       TaskCollectionViewModel,
       getTasksUrl = "/tasks",
-      createTaskUrl = "/tasks";
+      createTaskUrl = "/tasks",
+      editTaskUrl = "/tasks/{id}";
 
   TaskViewModel = function (task) {
     var self = this;
-    task = task || {};
+
+    self.task = task || {};
 
     self.assignedTo = ko.observable(task.assignedTo);
     self.description = ko.observable(task.description);
     self.id = ko.observable(task.id);
     self.isCompleted = ko.observable(task.isCompleted);
 
+    self.reset = function() {
+      self.assignedTo(self.task.assignedTo);
+      self.description(self.task.description);
+    };
   };
 
   TaskCollectionViewModel = function () {
@@ -33,6 +39,13 @@
       self.isNew(true);
     };
 
+    self.cancelEdit = function () {
+      self.selectedTask().reset();
+      self.selectedTask(null);
+      self.isEditing(false);
+      self.isNew(false);
+    };
+
     self.createTask = function () {
       var data = {
         description: self.selectedTask().description(),
@@ -45,7 +58,7 @@
     };
 
     self.editTask = function (task) {
-      alert("in editTask");
+      //alert("in editTask");
       self.selectedTask(task);
       self.isEditing(true);
       self.isNew(false);
