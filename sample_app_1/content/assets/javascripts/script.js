@@ -10,10 +10,10 @@
 
     self.task = task || {};
 
-    self.assignedTo = ko.observable(task.assignedTo);
-    self.description = ko.observable(task.description);
-    self.id = ko.observable(task.id);
-    self.isCompleted = ko.observable(task.isCompleted);
+    self.assignedTo = ko.observable(self.task.assignedTo);
+    self.description = ko.observable(self.task.description);
+    self.id = ko.observable(self.task.id);
+    self.isCompleted = ko.observable(self.task.isCompleted);
 
     self.reset = function() {
       self.assignedTo(self.task.assignedTo);

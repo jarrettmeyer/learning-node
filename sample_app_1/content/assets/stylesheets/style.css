@@ -24,3 +24,22 @@ th {
 td {
   border-top: 1px solid #73a8ff;
 }
+
+label {
+  display: block;
+  color: #333;
+}
+
+input[type=text], textarea {
+  color: #333;
+  padding: 3px;
+}
+
+input[type=text] {
+  width: 20em;
+}
+
+textarea {
+  width: 30em;
+  height: 4em;
+}
