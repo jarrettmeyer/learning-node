@@ -3,11 +3,14 @@ var Router = require("../Router");
 
 var emptyFunction = function () { };
 
+var fs = {
+};
+
 describe("Router", function () {
 
   describe("#constructor", function () {
     it("has no matches", function (done) {
-      var router = new Router();
+      var router = new Router(fs);
       assert.ok(router.matches);
       assert.equal(0, Object.keys(router.matches).length);
       done();
@@ -23,7 +26,7 @@ describe("Router", function () {
         "POST /tasks/aaaabbbbccccdddd"
       ];
       var pattern = /POST \/tasks\/[a-z0-9]{1,16}/;
-      var router = new Router();
+      var router = new Router(fs);
       for (var i = 0, len = testRoutes.length; i < len; i += 1) {
         var testRoute = testRoutes[i];
         var result = router.isMatch(testRoute, pattern);
@@ -34,7 +37,7 @@ describe("Router", function () {
 
     it("can match a string", function (done) {
       var pattern = "GET /index.html";
-      var router = new Router();
+      var router = new Router(fs);
       var result = router.isMatch("GET /index.html", pattern);
       assert.ok(result);
       done();
@@ -43,7 +46,7 @@ describe("Router", function () {
 
   describe("#match", function () {
     it("adds a match to the router", function (done) {
-      var router = new Router();
+      var router = new Router(fs);
       router.match("GET /index.html", emptyFunction);
       var keys = Object.keys(router.matches);
       assert.equal(1, keys.length);
@@ -54,7 +57,7 @@ describe("Router", function () {
 
   describe("#onRequest", function () {
     it("can match GET /", function (done) {
-      var router = new Router();
+      var router = new Router(fs);
       var isMatched = false;
       router.match("GET /", function (request, response) {
         isMatched = true;
@@ -73,7 +76,7 @@ describe("Router", function () {
   describe("#returnBinaryContent", function () {
     it("appends 'binary' to end call", function (done) {
       var isBinary = false;
-      var router = new Router();
+      var router = new Router(fs);
       var fakeRequest =  { };
       var fakeResponse = {
         writeHead: function () {},

@@ -4,7 +4,7 @@ var UrlParser = function (url) {
   self.url = url;
 
   self.getIdFromUrl = function (index) {
-    console.log("Attempting to get ID from " + self.url + ".");
+    //console.log("Attempting to get ID from " + self.url + ".");
     if (!index) {
       index = 2;
     }

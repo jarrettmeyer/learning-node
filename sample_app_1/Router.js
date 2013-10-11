@@ -1,7 +1,6 @@
-var fs = require("fs");
-
-var Router = function () {
+var Router = function (fs) {
   var self = this;
+  self.fs = fs;
   self.matches = {};
 
   self.findMatch = function (url) {
@@ -51,7 +50,7 @@ var Router = function () {
   };
 
   self.returnBinaryContent = function (request, response, filename, contentType) {
-    fs.readFile(filename, function (error, data) {
+    self.fs.readFile(filename, function (error, data) {
       if (error) {
         console.error(error);
         response.writeHead(500, { "Content-type": "text/html" });
@@ -67,7 +66,7 @@ var Router = function () {
     if (!contentType) {
       contentType = "text/html";
     }
-    fs.readFile(filename, "utf8", function (error, data) {
+    self.fs.readFile(filename, "utf8", function (error, data) {
       if (error) {
         response.writeHead(500, { "Content-type": "text/html" });
         response.end(error);

@@ -8,7 +8,7 @@ var UrlParser = require("./UrlParser");
 
 var App = function () {
   var self = this;
-  self.router = new Router();
+  self.router = new Router(fs);
   self.datafile = "./data/tasks.json";
 
   self.initializeRoutes = function () {
