@@ -1,4 +1,8 @@
 var Router = function (fs) {
+  if (!fs) {
+    throw "Undefined argument: fs";
+  }
+
   var self = this;
   self.fs = fs;
   self.matches = {};
