@@ -19,6 +19,13 @@
       self.assignedTo(self.task.assignedTo);
       self.description(self.task.description);
     };
+
+    self.taskCss = ko.computed(function () {
+      if (self.isCompleted()) {
+        return "task-completed";
+      }
+      return "task";
+    });
   };
 
   TaskCollectionViewModel = function () {

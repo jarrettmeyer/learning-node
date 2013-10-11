@@ -12,6 +12,11 @@ table {
   border-collapse: collapse;
 }
 
+tr.task-completed {
+  color: #ccc;
+  text-decoration: line-through;
+}
+
 td, th {
   padding: 3px;
   text-align: left;

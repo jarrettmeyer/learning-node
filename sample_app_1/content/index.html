@@ -21,7 +21,7 @@
         </tr>
       </thead>
       <tbody data-bind="foreach: tasks">
-        <tr>
+        <tr data-bind="css: taskCss">
           <td>
             <a href="#" data-bind="click: $root.editTask, enable: $root.allowEdit">
               <img src="/images/pencil.png"/>

@@ -4,7 +4,7 @@ var FormParser = require("./FormParser");
 var Router = require("./Router");
 var Task = require("./models/Task");
 var TaskCollection = require("./models/TaskCollection");
-var postTaskPattern = /POST \/tasks\/[a-z0-9]+/;
+var UrlParser = require("./UrlParser");
 
 var App = function () {
   var self = this;
@@ -47,7 +47,7 @@ var App = function () {
         self.router.returnJson(request, response, task);
       });
     });
-    self.router.match(postTaskPattern, function (request, response) {
+    self.router.match(/POST \/tasks\/[a-z0-9]+$/, function (request, response) {
       var formParser = new FormParser(request);
       formParser.getObject(function (data) {
         var task = new Task(data);
@@ -55,6 +55,13 @@ var App = function () {
         self.writeTasksToFile();
         self.router.returnJson(request, response, task);
       });
+    });
+    self.router.match(/POST \/tasks\/[a-z0-9]+\/complete$/, function (request, response) {
+      var id = (new UrlParser(request.url)).getIdFromUrl();
+      var task = self.taskCollection.get(id);
+      task.isCompleted = true;
+      self.writeTasksToFile();
+      self.router.returnEmpty(request, response);
     });
   };
 
