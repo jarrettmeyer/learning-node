@@ -1,8 +1,11 @@
 var Router = function (fs) {
+
+  // Pre-conditions.
   if (!fs) {
     throw "Undefined argument: fs";
   }
 
+  // Variable declarations.
   var self = this;
   self.fs = fs;
   self.matches = {};

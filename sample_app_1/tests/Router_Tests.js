@@ -4,20 +4,35 @@ var Router = require("../Router");
 var emptyFunction = function () { };
 
 var fs = {
+  readFile: function (error, data) {
+
+  }
 };
 
 describe("Router", function () {
 
   describe("#constructor", function () {
+
     it("has no matches", function (done) {
       var router = new Router(fs);
       assert.ok(router.matches);
       assert.equal(0, Object.keys(router.matches).length);
       done();
     });
+
+    it("should throw an error if no fs is defined", function (done) {
+      try {
+        new Router();
+      } catch (e) {
+        assert.equal("Undefined argument: fs", e);
+        done();
+      }
+    });
+
   });
 
   describe("#isMatch", function () {
+
     it("can match a regular expression", function (done) {
       var testRoutes = [
         "POST /tasks/1",
@@ -42,52 +57,101 @@ describe("Router", function () {
       assert.ok(result);
       done();
     });
+
   });
 
   describe("#match", function () {
+
+    var router;
+
+    beforeEach(function (done) {
+      router = new Router("fs");
+      done();
+    });
+
     it("adds a match to the router", function (done) {
-      var router = new Router(fs);
       router.match("GET /index.html", emptyFunction);
       var keys = Object.keys(router.matches);
       assert.equal(1, keys.length);
       assert.equal("GET /index.html", keys[0]);
       done();
     });
+
   });
 
   describe("#onRequest", function () {
-    it("can match GET /", function (done) {
-      var router = new Router(fs);
-      var isMatched = false;
-      router.match("GET /", function (request, response) {
+
+    var isMatched, request, response, router, simpleCallback;
+
+    beforeEach(function (done) {
+      isMatched = false;
+      router = new Router("fs");
+      request = { method: "GET", url: "" };
+      response = {};
+      simpleCallback = function (request, response) {
         isMatched = true;
-      });
-      var request = {
-        method: "GET",
-        url: "/"
       };
-      var response = {};
+
+      router.match("GET /", simpleCallback);
+      router.match("GET /tasks", simpleCallback);
+      router.match(/GET \/tasks\/[a-z0-9]+$/, simpleCallback);
+
+      done();
+    });
+
+    it("can match GET /", function (done) {
+      request.url = "/";
       router.onRequest(request, response);
       assert.ok(isMatched);
       done();
     });
+
+    it("can match GET /tasks", function (done) {
+      request.url = "/tasks";
+      router.onRequest(request, response);
+      assert.ok(isMatched);
+      done();
+    });
+
+    it("can match a regular expression", function (done) {
+      request.url = "/tasks/a1b2c3d4e5f6g7h8";
+      router.onRequest(request, response);
+      assert.ok(isMatched);
+      done();
+    });
+
   });
 
   describe("#returnBinaryContent", function () {
+
     it("appends 'binary' to end call", function (done) {
+
       var isBinary = false;
+      var testData;
+
+      var fs = {
+        readFile: function (filename, callback) {
+          callback(null, "this is a test");
+        }
+      };
+
       var router = new Router(fs);
       var fakeRequest =  { };
       var fakeResponse = {
         writeHead: function () {},
         end: function(data, test) {
+          testData = data;
           isBinary = (test === "binary");
         }
       };
-      setTimeout(function () {
-        router.returnBinaryContent(fakeRequest, fakeResponse, "./content/assets/images/pencil.png", "image/png");
-        assert.ok(isBinary);
-      }, 500);
+
+      // Act
+      router.returnBinaryContent(fakeRequest, fakeResponse, "./some/path", "image/png");
+      assert.ok(isBinary);
+      done();
+    });
+
+    it("writes expected content to end", function (done) {
       done();
     });
   });
