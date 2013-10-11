@@ -1,20 +1,12 @@
 var assert = require("assert");
 var Router = require("../Router");
 
-var emptyFunction = function () { };
-
-var fs = {
-  readFile: function (error, data) {
-
-  }
-};
-
 describe("Router", function () {
 
   describe("#constructor", function () {
 
     it("has no matches", function (done) {
-      var router = new Router(fs);
+      var router = new Router("fs");
       assert.ok(router.matches);
       assert.equal(0, Object.keys(router.matches).length);
       done();
@@ -41,7 +33,7 @@ describe("Router", function () {
         "POST /tasks/aaaabbbbccccdddd"
       ];
       var pattern = /POST \/tasks\/[a-z0-9]{1,16}/;
-      var router = new Router(fs);
+      var router = new Router("fs");
       for (var i = 0, len = testRoutes.length; i < len; i += 1) {
         var testRoute = testRoutes[i];
         var result = router.isMatch(testRoute, pattern);
@@ -52,7 +44,7 @@ describe("Router", function () {
 
     it("can match a string", function (done) {
       var pattern = "GET /index.html";
-      var router = new Router(fs);
+      var router = new Router("fs");
       var result = router.isMatch("GET /index.html", pattern);
       assert.ok(result);
       done();
@@ -62,9 +54,10 @@ describe("Router", function () {
 
   describe("#match", function () {
 
-    var router;
+    var emptyFunction, router;
 
     beforeEach(function (done) {
+      emptyFunction = function () {};
       router = new Router("fs");
       done();
     });
@@ -124,35 +117,48 @@ describe("Router", function () {
 
   describe("#returnBinaryContent", function () {
 
+    var fs, isBinary, request, response, router, testData;
+
+    beforeEach(function (done) {
+      fs = {
+        hasReadFile: false,
+        readFile: function(filename, callback) {
+          fs.hasReadFile = true;
+          callback(null, "This is my test data");
+        }
+      };
+      request = {};
+      response = {
+        data: null,
+        isBinary: false,
+        writeHead: function () { },
+        end: function (data, bin) {
+          response.data = data;
+          response.isBinary = bin;
+        }
+      };
+      router = new Router(fs);
+      done();
+    });
+
     it("appends 'binary' to end call", function (done) {
+      router.returnBinaryContent(request, response, "./some/path", "image/png");
+      assert.equal("binary", response.isBinary);
+      done();
+    });
 
-      var isBinary = false;
-      var testData;
-
-      var fs = {
-        readFile: function (filename, callback) {
-          callback(null, "this is a test");
-        }
-      };
-
-      var router = new Router(fs);
-      var fakeRequest =  { };
-      var fakeResponse = {
-        writeHead: function () {},
-        end: function(data, test) {
-          testData = data;
-          isBinary = (test === "binary");
-        }
-      };
-
-      // Act
-      router.returnBinaryContent(fakeRequest, fakeResponse, "./some/path", "image/png");
-      assert.ok(isBinary);
+    it("should read the file", function (done) {
+      assert.equal(false, fs.hasReadFile);
+      router.returnBinaryContent(request, response, "./some/path", "image/png");
+      assert.ok(fs.hasReadFile);
       done();
     });
 
     it("writes expected content to end", function (done) {
+      router.returnBinaryContent(request, response, "./some/path", "image/png");
+      assert.equal("This is my test data", response.data);
       done();
     });
+
   });
 });
