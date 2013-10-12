@@ -42,10 +42,19 @@ describe("App", function () {
       done();
     });
 
-    it("should declare a new instance of task storage", function (done)
-    {
+    it("should declare a new instance of task storage", function (done) {
       var app = new App();
       assert.ok(app.taskStorage);
+      done();
+    });
+
+    it("allows for an alternate definition of task storage", function (done) {
+      var testTaskStorage = {
+        getTasks: function () { },
+        isTest: true
+      };
+      var app = new App(testTaskStorage);
+      assert.ok(app.taskStorage.isTest);
       done();
     });
 

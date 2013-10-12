@@ -9,11 +9,12 @@ var TaskStorage = require("./TaskStorage");
 var UrlParser = require("./UrlParser");
 var vars = require('./vars');
 
-var App = function () {
+
+var App = function (taskStorage) {
 
   var self = this;
   self.router = new Router(fs);
-  self.taskStorage = new TaskStorage(fs);
+  self.taskStorage = taskStorage || new TaskStorage(fs);
 
   self.initializeRoutes = function () {
     self.router.match("GET /", function (request, response) {
