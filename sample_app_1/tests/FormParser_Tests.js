@@ -1,4 +1,5 @@
 var assert = require("assert");
+var querystring = require("querystring");
 var FormParser = require("../FormParser");
 
 describe("FormParser", function () {
@@ -18,7 +19,7 @@ describe("FormParser", function () {
 
   describe("#getObject", function () {
     it("returns the expected object", function (done) {
-      var formParser = new FormParser(fakeRequest);
+      var formParser = new FormParser(querystring, fakeRequest);
       formParser.getObject(function (o){
         assert.equal("John Doe", o.name);
         assert.equal(30, o.age);

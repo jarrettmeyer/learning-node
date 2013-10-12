@@ -1,9 +1,15 @@
-var qs = require("querystring");
+var FormParser = function (querystring, request) {
 
-var FormParser = function (_request) {
+  if (!querystring) {
+    throw "Undefined argument: querystring";
+  }
+  if (!request) {
+    throw "Undefined argument: request";
+  }
+
   var self = this;
-
-  self.request = _request;
+  self.querystring = querystring;
+  self.request = request;
   self.body = "";
   self.obj = {};
 
@@ -12,7 +18,7 @@ var FormParser = function (_request) {
       self.body += chunk;
     });
     self.request.on("end", function () {
-      self.obj = qs.parse(self.body);
+      self.obj = self.querystring.parse(self.body);
       if (callback) {
         callback(self.obj);
       }

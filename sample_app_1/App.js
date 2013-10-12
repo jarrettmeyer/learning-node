@@ -1,4 +1,5 @@
 var fs = require("fs");
+var querystring = require("querystring");
 var http = require("http");
 var FormParser = require("./FormParser");
 var Router = require("./Router");
@@ -39,7 +40,7 @@ var App = function () {
       });
     });
     self.router.match("POST /tasks", function (request, response) {
-      var formParser = new FormParser(request);
+      var formParser = new FormParser(querystring, request);
       formParser.getObject(function (data) {
         var task = new Task(data);
         self.taskCollection.add(task);
