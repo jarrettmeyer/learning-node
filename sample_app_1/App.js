@@ -13,7 +13,7 @@ var App = function () {
 
   var self = this;
   self.router = new Router(fs);
-  self.taskStorage = new TaskStorage(fs, vars);
+  self.taskStorage = new TaskStorage(fs);
 
   self.initializeRoutes = function () {
     self.router.match("GET /", function (request, response) {
