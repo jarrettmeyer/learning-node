@@ -5,12 +5,15 @@ var FormParser = require("./FormParser");
 var Router = require("./Router");
 var Task = require("./models/Task");
 var TaskCollection = require("./models/TaskCollection");
+var TaskStorage = require("./TaskStorage");
 var UrlParser = require("./UrlParser");
+var vars = require('./vars');
 
 var App = function () {
+
   var self = this;
   self.router = new Router(fs);
-  self.datafile = "./data/tasks.json";
+  self.taskStorage = new TaskStorage(fs, vars);
 
   self.initializeRoutes = function () {
     self.router.match("GET /", function (request, response) {
@@ -35,7 +38,7 @@ var App = function () {
       self.router.returnContent(request, response, "./content/assets/stylesheets/style.css", "text/css");
     });
     self.router.match("GET /tasks", function (request, response) {
-      self.readTasksFromFile(function (tasks) {
+      self.taskStorage.getTasks(function (error, tasks) {
         self.router.returnJson(request, response, tasks);
       });
     });
@@ -44,16 +47,16 @@ var App = function () {
       formParser.getObject(function (data) {
         var task = new Task(data);
         self.taskCollection.add(task);
-        self.writeTasksToFile();
+        self.taskStorage.saveTasks(self.taskCollection.tasks);
         self.router.returnJson(request, response, task);
       });
     });
     self.router.match(/POST \/tasks\/[a-z0-9]+$/, function (request, response) {
-      var formParser = new FormParser(request);
+      var formParser = new FormParser(querystring, request);
       formParser.getObject(function (data) {
         var task = new Task(data);
         self.taskCollection.update(task.id, task);
-        self.writeTasksToFile();
+        self.taskStorage.saveTasks(self.taskCollection.tasks);
         self.router.returnJson(request, response, task);
       });
     });
@@ -61,29 +64,8 @@ var App = function () {
       var id = (new UrlParser(request.url)).getIdFromUrl();
       var task = self.taskCollection.get(id);
       task.isCompleted = true;
-      self.writeTasksToFile();
+      self.taskStorage.saveTasks(self.taskCollection.tasks);
       self.router.returnEmpty(request, response);
-    });
-  };
-
-  self.readTasksFromFile = function (callback) {
-    fs.readFile(self.datafile, "utf8", function (error, data) {
-      if (error) {
-        console.error(error);
-        return;
-      }
-      var tasks = JSON.parse(data);
-      callback(tasks);
-    });
-  };
-
-  self.writeTasksToFile = function () {
-    var content = JSON.stringify(self.taskCollection.tasks);
-    fs.writeFile(self.datafile, content, function (error, data) {
-      if (error) {
-        console.error("Error when writing tasks to data file. File: " + self.datafile);
-        console.error("Error: " + error);
-      }
     });
   };
 
@@ -93,7 +75,7 @@ var App = function () {
   };
 
   self.initializeRoutes();
-  self.readTasksFromFile(function (tasks) {
+  self.taskStorage.getTasks(function (error, tasks) {
     self.taskCollection = new TaskCollection(tasks);
   });
 };
