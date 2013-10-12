@@ -75,6 +75,7 @@ var App = function (taskStorage) {
     server.listen(port);
   };
 
+  // Run the following when the App object is created.
   self.initializeRoutes();
   self.taskStorage.getTasks(function (error, tasks) {
     self.taskCollection = new TaskCollection(tasks);

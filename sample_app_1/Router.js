@@ -24,6 +24,10 @@ var Router = function (fs) {
     return null;
   };
 
+  self.getNumberOfRoutes = function () {
+    return self.matches.length;
+  };
+
   self.isMatch = function (url, pattern) {
     //console.log("Testing URL " + url + " against pattern " + pattern + ".");
     if (typeof pattern === "string" && url === pattern) {
