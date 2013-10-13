@@ -1,12 +1,12 @@
 var assert = require("assert");
-var error = require("../error");
+var ArgumentUndefinedError = require("../ArgumentUndefinedError");
 
-describe("error.ArgumentError", function () {
+describe("ArgumentUndefinedError", function () {
 
   describe("#argumentName", function () {
 
     it("saves the argument", function (done) {
-      var ae = new error.ArgumentError("variable");
+      var ae = new ArgumentUndefinedError("variable");
       assert.equal("variable", ae.argumentName);
       done();
     });
@@ -16,8 +16,8 @@ describe("error.ArgumentError", function () {
   describe("#toString", function () {
 
     it("produces the expected message", function (done) {
-      var ae = new error.ArgumentError("variable");
-      assert.equal("Undefined argument: variable", ae);
+      var ae = new ArgumentUndefinedError("variable");
+      assert.equal("Undefined argument: variable", ae.message);
       done();
     });;
 

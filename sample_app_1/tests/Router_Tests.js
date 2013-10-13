@@ -16,9 +16,20 @@ describe("Router", function () {
       try {
         new Router();
       } catch (e) {
-        assert.equal("Undefined argument: fs", e);
+        assert.equal("Undefined argument: fs", e.message);
         done();
       }
+    });
+
+  });
+
+  describe("#getNumberOfRoutes", function () {
+
+    it("should be 0 for a new router", function (done) {
+      var fs = {};
+      var router = new Router(fs);
+      assert.equal(0, router.getNumberOfRoutes());
+      done();
     });
 
   });

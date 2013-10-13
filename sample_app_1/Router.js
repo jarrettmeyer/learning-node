@@ -1,8 +1,10 @@
+var ArgumentUndefinedError = require("./ArgumentUndefinedError");
+
 var Router = function (fs) {
 
   // Pre-conditions.
   if (!fs) {
-    throw "Undefined argument: fs";
+    throw new ArgumentUndefinedError("fs");
   }
 
   // Variable declarations.
@@ -25,7 +27,8 @@ var Router = function (fs) {
   };
 
   self.getNumberOfRoutes = function () {
-    return self.matches.length;
+    var keys = Object.keys(self.matches);
+    return keys.length;
   };
 
   self.isMatch = function (url, pattern) {

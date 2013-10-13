@@ -2,6 +2,11 @@
 var fs = require("fs");
 var os = require("os");
 
+/**
+ * Join two paths together.
+ * @param {string} a - left side of path
+ * @param {string} b - right side of path
+ */
 var joinPath = function (a, b) {
   if (!a) {
     a = "/";

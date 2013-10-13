@@ -1,4 +1,4 @@
-var error = require("./error");
+var ArgumentUndefinedError = require("./ArgumentUndefinedError");
 
 /**
  * Allows routes to be configured sepratately from the rest of the application.
@@ -17,7 +17,7 @@ var RouteConfig = function (router) {
   // Route Configuration
 
   /**
-   * Overrides the default toString() function.
+   * Overrides the default toString() function, providing something actually useful.
    */
   self.toString = function () {
     return "Route Configuration. Number of routes: " + self.router.getNumberOfRoutes();
