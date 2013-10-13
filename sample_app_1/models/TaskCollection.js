@@ -29,9 +29,16 @@ var TaskCollection = function (tasks) {
     return false;
   };
 
+  self.remove = function (id) {
+    delete self.tasks[id];
+    self.setLength();
+    return true;
+  };
+
   self.setLength = function () {
     var keys = Object.keys(self.tasks);
     self.length = keys.length;
+    return self.length;
   };
 
   self.update = function (id, task) {

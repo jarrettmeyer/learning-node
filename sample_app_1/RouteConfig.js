@@ -62,6 +62,9 @@ var RouteConfig = function (router, taskActions) {
     self.router.match(/POST \/tasks\/[a-z0-9]+\/complete$/, function (request, response) {
       self.taskActions.completeTask(request, response);
     });
+    self.router.match(/DELETE \/tasks\/[a-z0-9]+$/, function (request, response) {
+      self.taskActions.deleteTask(request, response);
+    });
   };
 
   /**

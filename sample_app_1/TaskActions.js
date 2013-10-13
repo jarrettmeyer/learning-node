@@ -35,6 +35,13 @@ var TaskActions = function (router) {
     });
   };
 
+  self.deleteTask = function (request, response) {
+    var id = (new UrlParser(request.url)).getIdFromUrl();
+    self.taskCollection.remove(id);
+    self.taskStorage.saveTasks(self.taskCollection.tasks);
+    self.router.returnEmpty(request, response);
+  };
+
   self.editTask = function (request, response) {
     var formParser = new FormParser(querystring, request);
     formParser.getObject(function (data) {
