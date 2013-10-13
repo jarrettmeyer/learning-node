@@ -17,6 +17,14 @@
     self.id = ko.observable(self.task.id);
     self.isCompleted = ko.observable(self.task.isCompleted);
 
+    self.allowDelete = ko.computed(function () {
+      return (!window.viewModel.isEditing());
+    });
+
+    self.allowEdit = ko.computed(function () {
+      return (!window.viewModel.isEditing() && !self.isCompleted());
+    });
+
     self.reset = function() {
       self.assignedTo(self.task.assignedTo);
       self.description(self.task.description);

@@ -23,13 +23,13 @@
       <tbody data-bind="foreach: tasks">
         <tr data-bind="css: taskCss">
           <td style="white-space: nowrap;">
-            <a href="#" title="Edit" data-bind="click: $root.editTask, enable: $root.allowEdit">
+            <a href="#" title="Edit" data-bind="click: $root.editTask, visible: allowEdit">
               <img src="/images/pencil.png"/>
             </a>
-            <a href="#" title="Complete" data-bind="click: $root.completeTask">
+            <a href="#" title="Complete" data-bind="click: $root.completeTask, visible: allowEdit">
               <img src="/images/accept.png"/>
             </a>
-            <a href="#" title="Delete" data-bind="click: $root.deleteTask">
+            <a href="#" title="Delete" data-bind="click: $root.deleteTask, visible: allowEdit">
               <img src="/images/cross.png"/>
             </a>
           </td>
