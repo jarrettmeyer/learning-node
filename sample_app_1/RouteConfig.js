@@ -56,23 +56,12 @@ var RouteConfig = function (router, taskActions) {
     self.router.match("POST /tasks", function (request, response) {
       self.taskActions.createTask(request, response);
     });
-
-    // self.router.match(/POST \/tasks\/[a-z0-9]+$/, function (request, response) {
-    //   var formParser = new FormParser(querystring, request);
-    //   formParser.getObject(function (data) {
-    //     var task = new Task(data);
-    //     self.taskCollection.update(task.id, task);
-    //     self.taskStorage.saveTasks(self.taskCollection.tasks);
-    //     self.router.returnJson(request, response, task);
-    //   });
-    // });
-    // self.router.match(/POST \/tasks\/[a-z0-9]+\/complete$/, function (request, response) {
-    //   var id = (new UrlParser(request.url)).getIdFromUrl();
-    //   var task = self.taskCollection.get(id);
-    //   task.isCompleted = true;
-    //   self.taskStorage.saveTasks(self.taskCollection.tasks);
-    //   self.router.returnEmpty(request, response);
-    // });
+    self.router.match(/POST \/tasks\/[a-z0-9]+$/, function (request, response) {
+      self.taskActions.editTask(request, response);
+    });
+    self.router.match(/POST \/tasks\/[a-z0-9]+\/complete$/, function (request, response) {
+      self.taskActions.completeTask(request, response);
+    });
   };
 
   /**

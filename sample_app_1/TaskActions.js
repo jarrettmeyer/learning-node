@@ -4,6 +4,7 @@ var FormParser = require("./FormParser");
 var Task = require("./models/Task");
 var TaskCollection = require("./models/TaskCollection");
 var TaskStorage = require("./TaskStorage");
+var UrlParser = require("./UrlParser");
 
 var TaskActions = function (router) {
 
@@ -16,11 +17,29 @@ var TaskActions = function (router) {
   self.taskCollection = null;
   self.taskStorage = new TaskStorage(fs);
 
+  self.completeTask = function (request, response) {
+    var id = (new UrlParser(request.url)).getIdFromUrl();
+    var task = self.taskCollection.get(id);
+    task.isCompleted = true;
+    self.taskStorage.saveTasks(self.taskCollection.tasks);
+    self.router.returnEmpty(request, response);
+  };
+
   self.createTask = function (request, response) {
     var formParser = new FormParser(querystring, request);
     formParser.getObject(function (data) {
       var task = new Task(data);
       self.taskCollection.add(task);
+      self.taskStorage.saveTasks(self.taskCollection.tasks);
+      self.router.returnJson(request, response, task);
+    });
+  };
+
+  self.editTask = function (request, response) {
+    var formParser = new FormParser(querystring, request);
+    formParser.getObject(function (data) {
+      var task = new Task(data);
+      self.taskCollection.update(task.id, task);
       self.taskStorage.saveTasks(self.taskCollection.tasks);
       self.router.returnJson(request, response, task);
     });
@@ -40,21 +59,3 @@ var TaskActions = function (router) {
 };
 
 module.exports = TaskActions;
-
-
-// self.router.match(/POST \/tasks\/[a-z0-9]+$/, function (request, response) {
-//   var formParser = new FormParser(querystring, request);
-//   formParser.getObject(function (data) {
-//     var task = new Task(data);
-//     self.taskCollection.update(task.id, task);
-//     self.taskStorage.saveTasks(self.taskCollection.tasks);
-//     self.router.returnJson(request, response, task);
-//   });
-// });
-// self.router.match(/POST \/tasks\/[a-z0-9]+\/complete$/, function (request, response) {
-//   var id = (new UrlParser(request.url)).getIdFromUrl();
-//   var task = self.taskCollection.get(id);
-//   task.isCompleted = true;
-//   self.taskStorage.saveTasks(self.taskCollection.tasks);
-//   self.router.returnEmpty(request, response);
-// });
