@@ -2,7 +2,9 @@ var fs = require("fs");
 var querystring = require("querystring");
 var http = require("http");
 var FormParser = require("./FormParser");
+var Index = require("./Index");
 var Router = require("./Router");
+var RouteConfig = require("./RouteConfig");
 var Task = require("./models/Task");
 var TaskCollection = require("./models/TaskCollection");
 var TaskStorage = require("./TaskStorage");
@@ -14,12 +16,15 @@ var App = function (taskStorage) {
 
   var self = this;
   self.router = new Router(fs);
+  self.routeConfig = new RouteConfig(self.router);
   self.taskStorage = taskStorage || new TaskStorage(fs);
+  self.index = new Index(self.router);
+
 
   self.initializeRoutes = function () {
-    self.router.match("GET /", function (request, response) {
-      self.router.returnContent(request, response, "./content/index.html");
-    });
+    
+    self.routeConfig.configure(self);
+
     self.router.match("GET /images/pencil.png", function (request, response) {
       self.router.returnBinaryContent(request, response, "./content/assets/images/pencil.png", "image/png");
     });

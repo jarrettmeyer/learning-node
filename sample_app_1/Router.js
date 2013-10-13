@@ -1,10 +1,8 @@
-var ArgumentUndefinedError = require("./ArgumentUndefinedError");
-
 var Router = function (fs) {
 
   // Pre-conditions.
   if (!fs) {
-    throw new ArgumentUndefinedError("fs");
+    throw new Error("Undefined argument: fs");
   }
 
   // Variable declarations.
