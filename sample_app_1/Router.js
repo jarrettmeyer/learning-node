@@ -14,10 +14,12 @@ var Router = function (fs) {
     var keys = Object.keys(self.matches);
     for (var i = 0, len = keys.length; i < len; i += 1) {
       var pattern = keys[i];
+      // console.log("---- Testing pattern: " + pattern);
       if (self.isRegExp(pattern)) {
         pattern = self.toRegExp(pattern);
       }
       if (self.isMatch(url, pattern)) {
+        console.log("---- Found match: " + pattern);
         return self.matches[pattern];
       }
     }
@@ -46,13 +48,14 @@ var Router = function (fs) {
 
   self.match = function (pattern, callback) {
     self.matches[pattern] = callback;
+    console.log("Adding match for pattern: " + pattern + ". Number of routes: " + self.getNumberOfRoutes());
   };
 
   self.onRequest = function (request, response) {
     var method = request.method;
     var url = request.url;
     var requestedPattern = method + " " + url;
-    //console.log("Incoming request for: " + requestedPattern);
+    console.log("Incoming request for: " + requestedPattern);
     var match = self.findMatch(requestedPattern);
     if (match) {
       match(request, response);
@@ -101,7 +104,7 @@ var Router = function (fs) {
   };
 
   self.return404Error = function (requestedPattern, response) {
-    console.error("Sending 404 for requested pattern: " + requestedPattern);
+    console.error("---- Sending 404 for requested pattern: " + requestedPattern);
     response.writeHead(404, { "Content-type": "text/html" });
     response.end("Page not found: " + requestedPattern);
   };
