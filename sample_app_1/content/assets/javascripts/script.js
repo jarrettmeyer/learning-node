@@ -2,7 +2,9 @@
   var TaskViewModel,
       TaskCollectionViewModel,
       getTasksUrl = "/tasks",
+      completeTaskUrl = "/tasks/{id}/complete",
       createTaskUrl = "/tasks",
+      deleteTaskUrl = "/tasks/{id}",
       editTaskUrl = "/tasks/{id}";
 
   TaskViewModel = function (task) {
@@ -53,6 +55,15 @@
       self.isNew(false);
     };
 
+    self.completeTask = function (task) {
+      var id = task.id();
+      var url = completeTaskUrl.replace("{id}", id);
+      //alert("POSTing to " + url);
+      $.post(url, {}, function (result) {
+        task.isCompleted(true);
+      });
+    };
+
     self.createTask = function () {
       var data = {
         description: self.selectedTask().description(),
@@ -61,6 +72,17 @@
       $.post(createTaskUrl, data, function (result) {
         var taskViewModel = new TaskViewModel(result);
         self.tasks.push(taskViewModel);
+      });
+    };
+
+    self.deleteTask = function (task) {
+      var id = task.id();
+      var url = deleteTaskUrl.replace("{id}", id);
+      $.ajax(url, {
+        type: "DELETE",
+        complete: function () {
+          self.tasks.remove(task);
+        }
       });
     };
 

@@ -26,6 +26,12 @@ var RouteConfig = function (router, taskActions) {
     });
 
     // Image bindings...
+    self.router.match("GET /images/accept.png", function (request, response) {
+      self.router.returnBinaryContent(request, response, "./content/assets/images/accept.png", "image/png");
+    });
+    self.router.match("GET /images/cross.png", function (request, response) {
+      self.router.returnBinaryContent(request, response, "./content/assets/images/cross.png", "image/png");
+    });
     self.router.match("GET /images/pencil.png", function (request, response) {
       self.router.returnBinaryContent(request, response, "./content/assets/images/pencil.png", "image/png");
     });

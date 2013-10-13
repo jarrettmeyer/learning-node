@@ -5,6 +5,10 @@ body {
   color: #111;
 }
 
+a {
+  text-decoration: none;
+}
+
 table {
   margin-top: 2em;
   margin-bottom: 2em;
