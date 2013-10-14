@@ -17,4 +17,14 @@ The unit tests for Sample App #1 are written in [Mocha](http://visionmedia.githu
     $ cd ./sample_app_1
     $ ./run_tests.sh
 
+## AMQP
+
+The AMQP examples run in 2 different windows. In the first terminal window...
+
+    $ node ./04_amqp_receive.js
+
+In the second terminal window...
+
+    $ node ./04_amqp_send.js This is my message.
+
 Thanks!
