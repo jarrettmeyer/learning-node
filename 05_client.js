@@ -15,21 +15,26 @@ context.on("ready", function () {
   var req = context.socket("REQ");
   console.log(" [x] Created request socket");
 
-  // This will be
+  // This callback will be invoked when a reply comes
+  // back from the queue.
   req.on("data", function (message) {
     console.log(" [x] Received response: %s", message);
+
     var data = JSON.parse(message);
     console.log("     id: %s", data.id);
     console.log("     x: %s, y: %s", data.x, data.y);
     console.log("     sum: %s", data.sum);
 
+    // Close the context.
     context.close();
     console.log(" [x] Context was closed");
   });
 
+  // Connect to the queue.
   req.connect(queueName, function () {
     console.log(" [x] Connected to queue: %s", queueName);
 
+    // Write the request to the queue.
     var data = { id: uuid(), x: x, y: y };
     var content = JSON.stringify(data);
     req.write(content, encoding);
