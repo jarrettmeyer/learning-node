@@ -17,7 +17,7 @@ The unit tests for Sample App #1 are written in [Mocha](http://visionmedia.githu
     $ cd ./sample_app_1
     $ ./run_tests.sh
 
-## AMQP
+## RabbitMQ Pub/Sub
 
 The AMQP examples run in 2 different windows. In the first terminal window...
 
@@ -27,4 +27,23 @@ In the second terminal window...
 
     $ node ./04_amqp_send.js This is my message.
 
-Thanks!
+## RabbitMQ Request/Reply
+
+In terminal one...
+
+    $ node ./05_server.js
+
+In terminal two...
+
+    $ node ./05_client.js 7 12
+      [x] Created context
+      [x] Context is ready
+      [x] Created request socket
+      [x] Connected to queue: nodejs.demo.addition
+      [x] Sent request: x: 7, y: 12
+      [x] Received response: {"id":"e998ee40-c4da-4004-aac5-c160ccd34a14","x":7,"y":12,"sum":19}
+          id: e998ee40-c4da-4004-aac5-c160ccd34a14
+          x: 7, y: 12
+          sum: 19
+      [x] Context was closed
+
