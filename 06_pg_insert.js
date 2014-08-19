@@ -25,13 +25,6 @@ function getConnectionString() {
   return "postgres://" + host + "/" + database;
 }
 
-// function deleteAllTasks(client, callback) {
-//   client.query("delete from tasks where 1 = 1");
-//   if (callback) {
-//     callback();
-//   }
-// }
-
 function insertTask(client, params) {
   var query = "";
   query += "insert into tasks (";

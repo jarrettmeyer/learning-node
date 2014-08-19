@@ -20,9 +20,13 @@ context.on("ready", function () {
     data = JSON.parse(data);
 
     // Create the response object and write it to the reply.
-    var response = { id: data.id, x: data.x, y: data.y, sum: data.x + data.y };
-    var content = JSON.stringify(response);
-    rep.write(content, encoding);
+    // Adding setTimeout so it purposely takes a long time.
+    var durationInMs = parseInt(Math.random() * 10000, 10);
+    setTimeout(function () {
+      var response = { id: data.id, x: data.x, y: data.y, sum: data.x + data.y };
+      var content = JSON.stringify(response);
+      rep.write(content, encoding);
+    }, durationInMs);
   });
 
   // Connect the reply socket to the queue.
