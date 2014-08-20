@@ -1,15 +1,27 @@
+function writeThis() {
+  console.log("this: ", this);
+}
+
 // Log the current value of 'this' to the console. It should be the
 // Window object.
-console.log("this: ", this);
+writeThis();
 
+var counter = 0;
 
 // When a callback fires, demonstrate how 'this' has changed. It should
 // now be the button HTML element.
 $("#my-button").on("click", function () {
-  console.log("this: ", this);
+  if (counter % 3 === 0) {
+    // Call a function (defined above).
+    writeThis();
+  } else if (counter % 3 === 1) {
+    // Inline function, executed immediately.
+    (function () {
+      console.log("this: ", this);
+    })();
+  } else {
+    // Directly write to the console.
+    console.log("this: ", this);
+  }
+  counter += 1;
 });
-
-// If you come from C#, et al, you must let go of your concept of 'this' when
-// working with JavaScript. In C#, the 'this' object is very clear: it is a
-// reference to the current instance of the current class definition. In
-// JavaScript, 'this' is a reference to the context.
