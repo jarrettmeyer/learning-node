@@ -8,10 +8,11 @@ var Speaker = (function () {
 
   Speaker.prototype.bindEvents = function () {
     $(this.settings.button).on("click", function () {
-      // This line will fail because 'this' will be the button
-      // element when the callback fires.
       this.sayHello();
     }.bind(this));
+    // The .bind(this) appended to the function means that the callback is
+    // fixing the 'this' context to whatever it was when the method was defined.
+    // It is not allowed to change.
   };
 
   Speaker.prototype.sayHello = function () {
