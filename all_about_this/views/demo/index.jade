@@ -7,11 +7,17 @@ block content
   - var jsFile = '/javascripts/demo' + id + '.js'
 
   h1 Demo #{id}
+
   button(id="my-button") Click Me!
+
   h2 #{jsFile}
   pre.code-sample
+
   script(type='text/javascript', src=jsFile)
   script(type='text/javascript').
     $.get("/embed?path=#{jsFile}", function (result) {
       $(".code-sample").text(result);
     });
+
+  p Return to 
+    a(href='/') index
