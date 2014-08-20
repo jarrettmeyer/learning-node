@@ -1,3 +1,4 @@
+// Define the Speaker object.
 var Speaker = (function () {
   "use strict";
 
@@ -12,6 +13,8 @@ var Speaker = (function () {
   return Speaker;
 }).call(this);
 
+
+// Create a new instance of Speaker. When the button is clicked, say hello.
 var speaker = new Speaker("Jimmy");
 $("#my-button").on("click", function () {
   speaker.sayHello();

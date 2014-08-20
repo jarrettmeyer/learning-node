@@ -6,3 +6,11 @@ body {
 a {
   color: #00B7FF;
 }
+
+pre.code-sample {
+  padding: 4px;
+  color: #111;
+  background-color: #eee;
+  border: 1px solid #111;
+  font-family: Monaco, 'Lucida Console', monospace;
+}

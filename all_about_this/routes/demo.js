@@ -1,12 +1,9 @@
-exports.demo01 = function(req, res){
-  res.render('demo/01');
-};
-exports.demo02 = function(req, res){
-  res.render('demo/02');
-};
-exports.demo03 = function(req, res){
-  res.render('demo/03');
-};
-exports.demo04 = function(req, res){
-  res.render('demo/04');
+var url = require('url');
+
+exports.demo = function(request, response) {
+  var urlParts = url.parse(request.url);
+  var id = urlParts.pathname.split('/')[2];
+  response.render('demo/index', {
+    id: id
+  });
 };
